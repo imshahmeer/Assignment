@@ -1,7 +1,7 @@
 #!/bin/bash
 for n in `seq 10`
 do
-        random=$(shuf -i 1-10 -n10)
+        random=$(shuf -i 0-9 -n10)
 echo ${random//[[:space:]]/}
 
 done
