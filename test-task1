@@ -1,0 +1,14 @@
+Build Instructions
+Script name: task1.sh
+Run a command on linux terminal to make this script executable 
+# sudo chmod +x task1.sh
+# ./test1.sh
+
+Usage:
+Use in encryption methods for password encryptions.
+
+Description:
+I have used a shuffle function in this script to generate a random number and store that number in the variable called random.
+
+Limitation / Bugs:
+At time it will repeat the number. This can be cracked.
