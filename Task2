@@ -1,0 +1,43 @@
+Task 2:
+
+Imagine a server with the following specs:
+•	4 times Intel(R) Xeon(R) CPU E7-4830 v4 @ 2.00GHz
+•	64GB of ram
+•	2 tb HDD disk space
+•	2 x 10Gbit/s nics
+The server is used for SSL offloading and proxies around 25000 requests per second. Please let us know which metrics are interesting to monitor in that specific case and how would you do that? What are the challenges of monitoring this?
+
+Solution:
+Metrics to Monitor
+Server: Running or Down = Use Ping metric
+CPU: CPU Utilization | CPU Load | CPU Temperature
+Memory: Memory Usage
+Disk: Space and I/O read, write
+Network: Network Traffic | Incoming traffic
+Application Metrics:
+Need to import the template on Zabbix Host, and install the Zabbix agent 2 on the host machine. 
+Template: SSL certificate Valid Status
+
+Monitoring tool: Zabbix
+Server State:
+Trigger: Host Ping Lost : {Hostname.last(0)}=0 
+CPU State:
+Trigger: CPU Utilization more than 90%: {Host:system.cpu.util[,idle].avg(10m)}<20  
+Memory State: 
+Trigger: Lack of available memory on the server : {Host:vm.memory.size[available].last(0)}<256M
+
+Disk State: 
+Trigger: Disk Space is less than 10% : {Host:yfs.fs.size[/,nfree].last(0)}<10 
+Disk I/O:
+Trigger: Disk I/O is overloaded {Host.Name} : {host:system.cpu.util[.iowait].avg(5m)}>80
+Network Monitoring:
+Trigger: Incoming traffic is more than 10Mbs: {Interfacename:ifInOctets[X1 (Eth0)].last(300)}>10M
+Processor Load:
+Trigger: Processor load is to high : {host:system.cpu.load[percpu,avg1].avg(5m)}>5 
+Zabbix Agent:
+Trigger: Zabbix agent unreachable: {host:agent.ping.nodata(5m)}=1 
+
+Challenges of Monitoring:
+1)	Set proper trigger to minimize the false alarm
+2)	Identify the Load on CPU, memory and network interfaces by monitoring graphs which help us to upgrade or downgrade the resources on the need basis.
+
